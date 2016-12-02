@@ -33,6 +33,7 @@ class Projects extends CI_Controller {
                 
 	} // End index
 
+    /*
 	public function categories() {
     
         //$this->load->model('banners');
@@ -53,5 +54,6 @@ class Projects extends CI_Controller {
 		$this->load->view('main/footer');
                 
 	} // End index
+    */
     
 } // End class Main
