@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://cdn.pozvonim.com/crossdomain.html?v2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<script type="text/javascript">
+	var getUserDataVersion = function(name,def) {
+		var matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"));
+	    return matches ? decodeURIComponent(matches[1]) : def
+	};
+	window.addEventListener('message',function(data) {
+		if (data.data.type == 'pvm:session:get') {
+			var session = null;
+			var version = getUserDataVersion('pvmTrackVersion',null);
+			if (version) {
+				session = localStorage.getItem('session-' + version);
+				if (session) {
+					session = JSON.parse(session);
+				} else {
+					session = null;					
+				}
+			}
+			data.source.postMessage({
+				type: 'session',
+				messageId: data.data.messageId,
+				version: version,
+				session: session,
+			},data.data.url);
+		} else if (data.data.type == 'pvm:session:set') {
+			var version = getUserDataVersion('pvmTrackVersion',null);
+			if (version) {				
+				localStorage.setItem('session-' + version,JSON.stringify(data.data.session));
+			}
+		}
+	})
+</script>
+
+</body></html>
