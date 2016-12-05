@@ -21,6 +21,7 @@ class Catalog extends CI_Model {
         
         $result = $this->GetItems(array('is_bestseller' => 1), 4);
         
+         // architect not right
         foreach( $result as $key => $value ) {
         
             $result[$key]['description'] = character_limiter($result[$key]['description'], 100);
@@ -34,7 +35,7 @@ class Catalog extends CI_Model {
                 unset($result[$key]['images']);
             } // End if
             
-            $result[$key]['link'] = "/catalog/item/" . $key . "/";
+            $result[$key]['link'] = "/catalog/item/" . $key . "/"; // architect not right
             
         } // End foreach
         
@@ -133,7 +134,13 @@ CREATE TABLE IF NOT EXISTS `project_categories` (
         $this->db->select("*")->from("project_categories");
         
         if( is_array( $filter ) && ( count( $filter ) > 0 ) ) {
-            $this->db->where($filter);
+            foreach( $filter as $filter_field => $filter_val ) {
+                if( is_array($filter_val) ) {
+                    $this->db->where_in( $filter_field, $filter_val );
+                } else {
+                    $this->db->where( $filter_field, $filter_val );
+                } // End if
+            } // End foreach
         } // End if
         
         $query = $this->db->order_by('sort', 'ASC')->get();
@@ -359,7 +366,13 @@ item_id
         $this->db->select("*")->from("projects");
         
         if( is_array( $filter ) && ( count( $filter ) > 0 ) ) {
-            $this->db->where($filter);
+            foreach( $filter as $filter_field => $filter_val ) {
+                if( is_array($filter_val) ) {
+                    $this->db->where_in( $filter_field, $filter_val );
+                } else {
+                    $this->db->where( $filter_field, $filter_val );
+                } // End if
+            } // End foreach
         } // End if
         
         if( $limit > 0 ) {
@@ -367,6 +380,7 @@ item_id
         } // End if
         
         $query = $this->db->order_by('sort', 'ASC')->get();
+        
         /*
         $query = $this->db->order_by('sort', 'ASC')->get_compiled_select();
         echo $query;
