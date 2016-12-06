@@ -136,7 +136,8 @@ CREATE TABLE IF NOT EXISTS `project_categories` (
         if( is_array( $filter ) && ( count( $filter ) > 0 ) ) {
             foreach( $filter as $filter_field => $filter_val ) {
                 if( is_array($filter_val) ) {
-                    $this->db->where_in( $filter_field, $filter_val );
+                    if( count( $filter_val ) > 0 )
+                        $this->db->where_in( $filter_field, $filter_val );
                 } else {
                     $this->db->where( $filter_field, $filter_val );
                 } // End if
@@ -368,7 +369,8 @@ item_id
         if( is_array( $filter ) && ( count( $filter ) > 0 ) ) {
             foreach( $filter as $filter_field => $filter_val ) {
                 if( is_array($filter_val) ) {
-                    $this->db->where_in( $filter_field, $filter_val );
+                    if( count( $filter_val ) > 0 )
+                        $this->db->where_in( $filter_field, $filter_val );
                 } else {
                     $this->db->where( $filter_field, $filter_val );
                 } // End if
@@ -395,12 +397,16 @@ item_id
         $query->free_result();
         
         // Images
-        $query = $this->db->select("*")->from("project_images")->where_in('item_id', $item_ids)->get();       
-        foreach ($query->result_array() as $row) {
-            $result[$row['item_id']]['images'][$row['num']] = $row;
-        } // End foreach
-        
-        $query->free_result();
+        if( count( $item_ids ) > 0 ) {
+            
+            $query = $this->db->select("*")->from("project_images")->where_in('item_id', $item_ids)->get();       
+            foreach ($query->result_array() as $row) {
+                $result[$row['item_id']]['images'][$row['num']] = $row;
+            } // End foreach
+            
+            $query->free_result();
+            
+        } // End if
    
         return $result;
         

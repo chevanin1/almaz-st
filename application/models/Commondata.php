@@ -62,44 +62,44 @@ class Commondata extends CI_Model {
         } // End foreach
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/catalog/",
             'title' => "Проекты",
             'is_link' => true,
             'sub_menu' => $projects_sub_menu
         );
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/examples/",
             'title' => "Наши работы",
             'is_link' => true
         );
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/additional/",
             'title' => "Дополнительные услуги",
             'is_link' => true
         );
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/actions/",
             'title' => "Акции",
             'is_link' => true
         );
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/info/",
             'title' => "Полезная информация",
             'is_link' => true
         );
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/about/",
             'title' => "О компании",
             'is_link' => true
         );
         
         $result[] = array(
-            'link' => "#",
+            'link' => "/contacts/",
             'title' => "Контакты",
             'is_link' => true
         );

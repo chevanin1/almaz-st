@@ -25,7 +25,7 @@
                     <div class="navbar-header">
                     
                         <!--<a class="navbar-brand logo" href="#"><img alt="<?php echo $site_name; ?>" src="/img/logo-small.png"></a>-->
-                        <a class="navbar-brand logo" href="#"><img alt="<?php echo $site_name; ?>" src="/img/logo-big.png"></a>
+                        <a class="navbar-brand logo" href="<?php echo base_url(); ?>"><img alt="<?php echo $site_name; ?>" src="/img/logo-big.png"></a>
                         
                         <div class="header-top-info container-fluid">
                             
@@ -45,7 +45,7 @@
                             <?php foreach( $top_menu as $menu_item ) : ?>
                                 <?php if( isset( $menu_item['sub_menu'] ) && is_array($menu_item['sub_menu']) && ( count($menu_item['sub_menu']) > 0) ) : ?>
                                     <li class="dropdown">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $menu_item['title']; ?> <span class="caret"></span></a>
+                                        <a href="<?php echo $menu_item['link']; ?>" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $menu_item['title']; ?> <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
                                             <?php foreach( $menu_item['sub_menu'] as $sub_menu_item ) : ?>
                                                 <?php if( isset($sub_menu_item['is_separator']) && ($sub_menu_item['is_separator']) ): ?>
