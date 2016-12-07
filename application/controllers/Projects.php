@@ -100,8 +100,55 @@ class Projects extends CI_Controller {
         } else {
             redirect(base_url(), "refresh");
         } // End if
-
                 
-	} // End index
+	} // End categories
+    
+
+
+	public function items() {
+            
+        if( $this->uri->segment(3) ) {
+            
+            $this->load->model('gallery');  
+
+            $this->load->helper('text');
+                
+            $ItemID = $this->uri->segment(3);
+            $Item = $this->catalog->GetItem(intval($ItemID));
+            
+            if( count( $Item ) > 0 ) {
+            
+                $commondata = $this->commondata->getAllHeaderDatas();               
+                $this->load->view('main/header', $commondata);
+                        
+                $data = array();
+                
+                $data['data_item_img_path'] = base_url();
+                $data['data_item_img_path'] .= '/img/items/';
+                
+                $data['item_title'] = "ПРОЕКТ " . $Item['name'];
+                
+                if( isset( $Item['category_id'] ) && ( $Item['category_id'] != 0 ) ) {
+                    $Category = $this->catalog->GetCategory(intval($ItemID));
+                    $Item['category_name'] = $Category['name'];
+                } else {
+                    $Item['category_name'] = "";
+                } // End if
+                
+                $data['item'] = $Item;
+                $data['examples'] = $this->gallery->getGalleryByItem($ItemID);
+                
+                $this->load->view('catalog/item', $data);
+                $this->load->view('main/footer');   
+                    
+            } else {
+                redirect(base_url(), "refresh");
+            } // End if
+                
+        } else {
+            redirect(base_url(), "refresh");
+        } // End if
+                
+	} // End items
     
 } // End class Main

@@ -54,5 +54,6 @@ $route['404_override'] = 'main/error';
 $route['translate_uri_dashes'] = FALSE;
 
 $route['catalog/categories/(:num)'] = 'projects/categories/$1';
+$route['catalog/item/(:num)'] = 'projects/items/$1';
 
 $route['scaffolding_trigger'] = 'abc';

@@ -111,3 +111,22 @@ header nav .logo {
   width: 70%;
   margin: auto;
 }
+
+
+#project_images > p > a.thumbnail {
+	width: 60px;
+	float: left;
+	margin-left: 5px;
+}
+
+#project_images > p > a.thumbnail_main {
+	width: 400px;
+}
+
+.item_price {
+	color: #1C9B1C;
+}
+
+.item_category {
+	color: rgba(17, 16, 20, 0.59);
+}

@@ -46,7 +46,7 @@ class Gallery extends CI_Model {
     } // End function getGalleryOnMain
     
     
-    public function getGalleryByCat( $CategoryId ) {
+    public function getGalleryByCat( $CategoryID ) {
     
         // limit 4
     
@@ -80,6 +80,42 @@ class Gallery extends CI_Model {
         return $result;
     
     } // End function getGalleryByCat
+    
+    
+    public function getGalleryByItem( $ItemID ) {
+    
+        // limit 4
+    
+        $result = array();
+        $result[] = array(
+            'img' => "http://lorempixel.com/300/300/",
+            'name' => "Дом из какого-то бруса 1",
+            'caption' => "Дом из какого-то бруса 1",
+            'link' => "#",
+        );        
+        $result[] = array(
+            'img' => "http://lorempixel.com/300/300/",
+            'name' => "Дом из какого-то бруса 2",
+            'caption' => "Дом из какого-то бруса 2",
+            'link' => "#",
+        );        
+        $result[] = array(
+            'img' => "http://lorempixel.com/300/300/",
+            'name' => "Дом из какого-то бруса 3",
+            'caption' => "Дом из какого-то бруса 3",
+            'link' => "#",
+        );        
+        $result[] = array(
+            'img' => "http://lorempixel.com/300/300/",
+            'name' => "Дом из какого-то бруса 4",
+            'caption' => "Дом из какого-то бруса 4",
+            'link' => "#",
+        );        
+      
+                
+        return $result;
+    
+    } // End function getGalleryByItem
 
 } // End Gallery
 
