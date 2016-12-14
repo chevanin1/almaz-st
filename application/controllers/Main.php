@@ -28,6 +28,7 @@ class Main extends CI_Controller {
         $data['examples']['items'] = $this->gallery->getGalleryOnMain();
         
 		$this->load->view('main/index', $data);
+        $this->load->view('main/footer');
                 
 	} // End index
 
@@ -49,6 +50,38 @@ class Main extends CI_Controller {
 		$this->load->view('main/error', $data);
 		$this->load->view('main/footer');
                 
-	} // End index
+	} // End error
+    
+    
+    public function content_page() {
+            
+        if( $this->uri->rsegment(3) ) {
+        
+            $PageID = $this->uri->rsegment(3);
+            $Page = $this->commondata->getContentPage(intval($PageID));
+            
+            if( count( $Page ) > 0 ) {
+            
+                $commondata = $this->commondata->getAllHeaderDatas();     
+              
+                $this->load->view('main/header', $commondata);
+                        
+                $data = array();
+                $data['page'] = $Page;
+                
+                $this->load->view('main/content_page', $data);
+                $this->load->view('main/footer');   
+                    
+            
+            } else {
+                redirect(base_url(), "refresh");
+            } // End if          
+                
+        } else {
+            redirect(base_url(), "refresh");
+        } // End if
+                
+    } // End content_page
+    
     
 } // End class Main

@@ -382,13 +382,6 @@ class Admin extends CI_Controller {
     } // End function catalog_cat_delete
 
     
-    // items - list
-    // item add
-    // item edit
-    // item delete
-
-    
-    
     public function catalog_list() {
     
         $this->load->model('catalog');
@@ -812,7 +805,387 @@ class Admin extends CI_Controller {
     ///////////////////////////////////////////////////
     // CATALOG END
     ///////////////////////////////////////////////////
+  
+  
+    ///////////////////////////////////////////////////
+    // EXAMPLES BEGIN
+    ///////////////////////////////////////////////////
+     
+    public function examples_list() {
     
+        $this->load->model('gallery');
+        $this->load->model('catalog');
+        $this->load->library('user_agent');   
+        
+        if( $this->user->isAuth() ) {
+
+            $filter = array();
+            $Examples = $this->gallery->GetItems($filter);
+            
+            $header_data = array();
+            $data = array();
+            $left_menu = array();
+            $footer = array();     
+
+            $data['header'] = "Примеры работ (Галереи)";
+            
+            $ItemIDs = array();
+            $CategoryIDs = array();
+            foreach( $Examples as $key => $value ) {           
+                if( isset( $Examples[$key]['images'] ) ) {
+                    foreach( $Examples[$key]['images'] as $image ) {
+                        if( $image['num'] == 1 ) {
+                            $Examples[$key]['img'] = $image['img'];
+                        } // End if
+                    } // End foreach
+                    unset($Examples[$key]['images']);
+                } // End if    
+
+                if( isset( $value['category_id'] ) && ( $value['category_id'] != 0 ) ) {
+                    $CategoryIDs[] = $value['category_id'];
+                } // End if
+
+                if( isset( $value['item_id'] ) && ( $value['item_id'] != 0 ) ) {
+                    $ItemIDs[] = $value['item_id'];
+                } // End if
+                
+            } // End foreach         
+            
+            $data['items'] = $Examples;
+            
+            if( count($CategoryIDs) > 0 ) {
+                $filter = array( 'id' => $CategoryIDs);
+                $data['categories'] = $this->catalog->GetCategories($filter);
+            } else {
+                $data['categories'] = array();
+            } // End if
+            
+            if( count($ItemIDs) > 0 ) {
+                $filter = array( 'id' => $ItemIDs);
+                $data['projects'] = $this->catalog->GetItems($filter);
+            } else {
+                $data['projects'] = array();
+            } // End if
+            
+            // Images Info
+            $data['data_img_path'] = base_url();
+            $data['data_img_path'] .= '/img/gallery/';
+
+            $header_data['user_name'] = "";
+            
+            $activeMenuPoint = "/";
+            $activeMenuPoint .= $this->uri->segment(1);
+            $activeMenuPoint .= "/";
+            $activeMenuPoint .= $this->uri->segment(2);
+            $activeMenuPoint .= "/";
+            
+            $left_menu['menu'] = $this->commondata->getAdminLeftMenu($activeMenuPoint);
+                    
+            $this->load->view('admin/header', $header_data);
+            $this->load->view('admin/left_menu', $left_menu);
+            $this->load->view('admin/examples/list', $data);
+            $this->load->view('admin/footer', $footer);      
+            
+        } else {
+            redirect("/admin/auth/", "refresh");
+        } // End if
+        
+    } // End function examples_list
+    
+    
+    public function example_add() {
+    
+        $this->load->model('gallery');
+        $this->load->model('catalog');
+        $ImagesCount = 10; // to config
+    
+        if( $this->user->isAuth() ) {
+        
+            // разбиваем на валидацию полей формы и картинок
+            $this->load->library('form_validation');
+            $this->load->library('user_agent');
+            
+            // Form validation rules and other form values
+            $this->form_validation->set_rules('name', 'lang:name', 'required|max_length[100]',
+                array(
+                'required' => "Поле \"{field}\" должно быть заполнено", 
+                'max_length' => "Поле \"{field}\" не должно быть длиннее 100 символов"
+                )
+            );                      
+            
+            // Image upload settings and rules
+            $upload_config['upload_path']          = FCPATH . '/img/gallery/';
+            $upload_config['allowed_types']        = 'gif|jpg|png';
+            $this->load->library('upload', $upload_config);
+                       
+            // Form validation
+            $processing_error = true;
+            //$img_error = "";
+            $data_img = array();
+            //$data_img_name = false;
+            
+            $img_error = array();
+            for( $i = 1; $i <= $ImagesCount; $i++ ) {
+                $img_error[$i] = "";
+            } // End for
+            
+            $img_name = array();
+            for( $i = 1; $i <= $ImagesCount; $i++ ) {
+                if( $this->input->post('uploaded_' . $i, true) && ( $this->input->post('uploaded_' . $i, true) != "" ) ) {
+                    $img_name[$i] = $this->input->post('uploaded_' . $i, true);
+                } else {
+                    $img_name[$i] = "";
+                } // End if
+                //uploaded_$i;
+            } // End for   
+            
+            // Upload images validation
+            if( $this->form_validation->run() == true ) {
+            
+                $have_img_errors = false;
+                
+                for( $i = 1; $i <= $ImagesCount; $i++ ) {
+                    if( !empty($_FILES['img_' . $i]['name']) ) {
+                        $img_name[$i] = xss_clean($_FILES['img_' . $i]['name']);
+                        if( !$this->upload->do_upload('img_' . $i) ) {
+                            $img_error[$i] = $this->upload->display_errors();
+                            $have_img_errors = true;
+                        } else {
+                            $data_img[$i] = $this->upload->data();
+                            $img_name[$i] = $data_img[$i]['file_name'];
+                        } // End if
+                    } // End if
+                } // End for
+
+                if( !$have_img_errors ) $processing_error = false;
+                
+            } // End if          
+            
+            if( $processing_error ) {
+                
+                $header_data = array();
+                $data = array();
+                $left_menu = array();
+                $footer = array();
+                
+                $header_data['user_name'] = "";
+                
+                $activeMenuPoint = "/admin/examples_list/";            
+                $left_menu['menu'] = $this->commondata->getAdminLeftMenu($activeMenuPoint);
+                
+                $data['header'] = "Новая галерея примеров";
+                              
+                // For category select
+                $filter = array();
+                $data['categories'] = array();
+                $data['categories'][] = array( 'id' => 0, 'parent_id' => 0, 'name' => "Без категории" );
+                $data['categories'] = array_merge( $data['categories'], $this->catalog->GetCategories($filter, true) );
+                
+                // For project select
+                $filter = array();
+                $data['projects'] = array();
+                $data['projects'][] = array( 'id' => 0, 'name' => "Без проекта" );
+                $data['projects'] = array_merge( $data['projects'], $this->catalog->GetItems($filter) );
+                
+                // Images Info
+                $data['data_img_path'] = base_url();
+                $data['data_img_path'] .= '/img/gallery/';
+                               
+                $data['images_count'] = $ImagesCount;
+                $data['img_error'] = $img_error;
+                $data['img_name'] = $img_name;
+                              
+                $this->load->view('admin/header', $header_data);
+                $this->load->view('admin/left_menu', $left_menu);           
+                $this->load->view('admin/examples/add', $data);
+                $this->load->view('admin/footer', $footer);
+            
+            } else {
+
+                $dataToAdd = array(
+                    'name' => $this->input->post('name', true),
+                    'category_id' => $this->input->post('category_id', true),
+                    'item_id' => $this->input->post('item_id', true),
+                    'description' => $this->input->post('description', true),
+                    'img' => $img_name
+                );                
+                $this->gallery->AddItem($dataToAdd);
+                redirect("/admin/examples_list/", "refresh");   
+                                                             
+            } // End if
+            
+        } else {
+            redirect("/admin/auth/", "refresh");
+        } // End if
+        
+    } // End function example_add   
+ 
+       
+    public function example_edit() {
+    
+        $this->load->model('gallery');
+        $this->load->model('catalog');
+        $ImagesCount = 10; // to config
+    
+        if( $this->user->isAuth() && $this->uri->segment(3) ) {
+        
+            $ItemID = $this->uri->segment(3);
+            $ItemInfo = $this->gallery->GetItem($ItemID); 
+            
+            // разбиваем на валидацию полей формы и картинок
+            $this->load->library('form_validation');
+            $this->load->library('user_agent');
+            
+            // Form validation rules and other form values
+            $this->form_validation->set_rules('name', 'lang:name', 'required|max_length[100]',
+                array(
+                'required' => "Поле \"{field}\" должно быть заполнено", 
+                'max_length' => "Поле \"{field}\" не должно быть длиннее 100 символов"
+                )
+            );                      
+            
+            // Image upload settings and rules
+            $upload_config['upload_path']          = FCPATH . '/img/gallery/';
+            $upload_config['allowed_types']        = 'gif|jpg|png';
+            $this->load->library('upload', $upload_config);
+                       
+            // Form validation
+            $processing_error = true;
+            //$img_error = "";
+            $data_img = array();
+            //$data_img_name = false;
+            
+            $img_error = array();
+            for( $i = 1; $i <= $ImagesCount; $i++ ) {
+                $img_error[$i] = "";
+            } // End for
+            
+            $img_name = array();
+            for( $i = 1; $i <= $ImagesCount; $i++ ) {
+                if( $this->input->post('uploaded_' . $i, true) && ( $this->input->post('uploaded_' . $i, true) != "" ) ) {
+                    $img_name[$i] = $this->input->post('uploaded_' . $i, true);
+                } else {
+                    if( isset($ItemInfo['img'][$i]) ) {
+                        $img_name[$i] = $ItemInfo['img'][$i]['img'];
+                    } else {
+                        $img_name[$i] = "";
+                    } // End if
+                } // End if
+                //uploaded_$i;
+            } // End for   
+            
+            // Upload images validation
+            if( $this->form_validation->run() == true ) {
+            
+                $have_img_errors = false;
+                
+                for( $i = 1; $i <= $ImagesCount; $i++ ) {
+                    if( !empty($_FILES['img_' . $i]['name']) ) {
+                        $img_name[$i] = xss_clean($_FILES['img_' . $i]['name']);
+                        if( !$this->upload->do_upload('img_' . $i) ) {
+                            $img_error[$i] = $this->upload->display_errors();
+                            $have_img_errors = true;
+                        } else {
+                            $data_img[$i] = $this->upload->data();
+                            $img_name[$i] = $data_img[$i]['file_name'];
+                        } // End if
+                    } // End if
+                } // End for
+
+                if( !$have_img_errors ) $processing_error = false;
+                
+            } // End if       
+            
+            if( $processing_error ) {
+                
+                $header_data = array();
+                $data = array();
+                $left_menu = array();
+                $footer = array();
+                
+                $header_data['user_name'] = "";
+                
+                $activeMenuPoint = "/admin/examples_list/";            
+                $left_menu['menu'] = $this->commondata->getAdminLeftMenu($activeMenuPoint);
+                
+                $data['header'] = "Редактирование галереи " . $ItemInfo['name'];
+                $data['item_info'] = $ItemInfo;
+                              
+                // For category select
+                $filter = array();
+                $data['categories'] = array();
+                $data['categories'][] = array( 'id' => 0, 'parent_id' => 0, 'name' => "Без категории" );
+                $data['categories'] = array_merge( $data['categories'], $this->catalog->GetCategories($filter, true) );
+                
+                // For project select
+                $filter = array();
+                $data['projects'] = array();
+                $data['projects'][] = array( 'id' => 0, 'name' => "Без проекта" );
+                $data['projects'] = array_merge( $data['projects'], $this->catalog->GetItems($filter) );
+                
+                // Images Info
+                $data['data_img_path'] = base_url();
+                $data['data_img_path'] .= '/img/gallery/';
+                               
+                $data['images_count'] = $ImagesCount;
+                $data['img_error'] = $img_error;
+                $data['img_name'] = $img_name;
+                              
+                $this->load->view('admin/header', $header_data);
+                $this->load->view('admin/left_menu', $left_menu);           
+                $this->load->view('admin/examples/edit', $data);
+                $this->load->view('admin/footer', $footer);
+                
+            } else {
+                
+                $dataToEdit = array(
+                    'name' => $this->input->post('name', true),
+                    'category_id' => $this->input->post('category_id', true),
+                    'item_id' => $this->input->post('item_id', true),
+                    'description' => $this->input->post('description', true),
+                    'img' => $img_name
+                );                
+                $this->gallery->UpdateItem($ItemID, $dataToEdit);
+                redirect("/admin/examples_list/", "refresh");   
+                                                             
+            } // End if
+            
+        } else {
+            redirect("/admin/auth/", "refresh");
+        } // End if
+        
+    } // End function example_edit   
+    
+    
+    public function example_delete() {
+    
+        $this->load->model('catalog');
+    
+        if( $this->user->isAuth() && $this->uri->segment(3) ) {
+            
+            /*
+            $CategoryID = $this->uri->segment(3);
+                
+            $this->catalog->DeleteCategory($CategoryID);
+            redirect("/admin/catalog_cat_list/", "refresh");     
+            */            
+            
+        } else {
+            redirect("/admin/auth/", "refresh");
+        } // End if
+        
+    } // End function example_delete
+
+    
+
+   
+  
+    ///////////////////////////////////////////////////
+    // EXAMPLES END
+    ///////////////////////////////////////////////////
+  
+
+  
     
     
     

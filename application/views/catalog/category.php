@@ -30,7 +30,7 @@
                                     <?php endif; ?>
                                     <h3><?php echo $sub_category['name']; ?></h3>
                                     <p><?php echo $sub_category['description']; ?></p>
-                                    <p><a class="btn btn-default" href="<?php echo base_url(); ?>/catalog/categories/<?php echo $sub_category['id'];?>/" role="button">Подробнее »</a></p>
+                                    <p><a class="btn btn-default" href="<?php echo base_url(); ?>catalog/categories/<?php echo $sub_category['id'];?>/" role="button">Подробнее »</a></p>
                                 </div>
                             </div>    
                         <?php endforeach; ?>
@@ -57,7 +57,7 @@
                         <h3><?php echo $item['name']; ?></h3>
                         <p><?php echo $item['description']; ?></p>
                         <p class="price">От <?php echo $item['price']; ?> р.</p>
-                        <p><a class="btn btn-default" href="<?php echo base_url(); ?>/catalog/item/<?php echo $item['id'];?>" role="button">Подробнее »</a></p>
+                        <p><a class="btn btn-default" href="<?php echo base_url(); ?>catalog/item/<?php echo $item['id'];?>" role="button">Подробнее »</a></p>
                     </div>
                 </div>    
             <?php endforeach; ?>

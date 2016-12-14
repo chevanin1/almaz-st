@@ -56,4 +56,10 @@ $route['translate_uri_dashes'] = FALSE;
 $route['catalog/categories/(:num)'] = 'projects/categories/$1';
 $route['catalog/item/(:num)'] = 'projects/items/$1';
 
+$route['info'] = 'main/content_page/1';
+$route['additional'] = 'main/content_page/2';
+$route['materials'] = 'main/content_page/3';
+$route['about'] = 'main/content_page/4';
+$route['contacts'] = 'main/content_page/5';
+
 $route['scaffolding_trigger'] = 'abc';

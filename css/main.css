@@ -130,3 +130,27 @@ header nav .logo {
 .item_category {
 	color: rgba(17, 16, 20, 0.59);
 }
+
+
+footer {
+	background-color: #fff; !important;
+	background: url(/img/bg_header.png);
+}
+
+footer a {
+	color: #021a74;
+}
+
+.footer_categories {
+	list-style: none;
+	padding-left: 0;
+}
+
+.footer_pages {
+	list-style: none;
+	padding-left: 0;
+}
+
+.footer_cr {
+	font-size: 12px;
+}

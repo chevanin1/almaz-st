@@ -27,7 +27,7 @@
             </a>
         </div>
     </div>        
-    <div class="all_examples"><a class="btn btn-default" href="#" role="button">Другие наши работы »</a></div>                        
+    <div class="all_examples"><a class="btn btn-default" href="/examples/" role="button">Другие наши работы »</a></div>                        
 </div>
 
 
