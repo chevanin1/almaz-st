@@ -55,7 +55,6 @@
                             <img src="<?php echo $data_item_img_path . $item['img']; ?>" alt="<?php echo $item['name']; ?>" width="200" class="img-responsive">
                         <?php endif; ?>
                         <h3><?php echo $item['name']; ?></h3>
-                        <p><?php echo $item['description']; ?></p>
                         <p class="price">От <?php echo $item['price']; ?> р.</p>
                         <p><a class="btn btn-default" href="<?php echo base_url(); ?>catalog/item/<?php echo $item['id'];?>" role="button">Подробнее »</a></p>
                     </div>
