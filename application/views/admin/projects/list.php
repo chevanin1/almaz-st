@@ -27,6 +27,7 @@
                             <th>Лучшее предложение</th>
                             <th></th>
                             <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +90,7 @@
                                 </div> 
                             </td>
                             <td><a href="/admin/catalog_edit/<?php echo $item['id']; ?>/">[Редактировать]</a></td>
+                            <td><a href="/admin/catalog_copy/<?php echo $item['id']; ?>/">[Копировать]</a></td>
                             <td><a href="/admin/catalog_delete/<?php echo $item['id']; ?>/">[Удалить]</a></td>
                         </tr>
                         <?php endforeach; ?>               

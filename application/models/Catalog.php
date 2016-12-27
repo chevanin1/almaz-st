@@ -322,7 +322,7 @@ item_id
             } // End if
         } // End foreach
         
-        return true;
+        return $ItemID;
         
     } // End function AddItem
     

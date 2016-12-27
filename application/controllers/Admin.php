@@ -778,6 +778,38 @@ class Admin extends CI_Controller {
         } // End if
          
     } // End function catalog_edit   
+ 
+       
+    public function catalog_copy() {
+   
+        $this->load->model('catalog');
+        $ImagesCount = 5; // to config
+        
+        if( $this->user->isAuth() && $this->uri->segment(3) ) {
+        
+            $ItemID = $this->uri->segment(3);
+            $ItemInfo = $this->catalog->GetItem($ItemID); 
+            
+            // Processing $ItemInfo            
+            unset($ItemInfo['id']);
+            
+            if( isset( $ItemInfo['img'] ) ) {
+                $img_name = array();
+                foreach( $ItemInfo['img'] as $key => $value ) {
+                    $img_name[$key] = $ItemInfo['img'][$key]['name'];
+                } // End foreach
+                $ItemInfo['img'] = $img_name;
+            } // End if
+            
+            // Saving $ItemInfo
+            $NewItemID = $this->catalog->AddItem($ItemInfo);           
+            redirect("/admin/catalog_edit/" . $NewItemID, "refresh");             
+            
+        } else {
+            redirect("/admin/auth/", "refresh");
+        } // End if
+         
+    } // End function catalog_edit   
     
     
     public function catalog_delete() {
