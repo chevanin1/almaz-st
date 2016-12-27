@@ -154,3 +154,7 @@ footer a {
 .footer_cr {
 	font-size: 12px;
 }
+
+.item_description table td {
+	padding: 5px;
+}
