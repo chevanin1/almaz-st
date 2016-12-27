@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="col-md-12">                       
                             <h2>О проекте:</h2>                                       
-                            <p class="item_description"><?php echo nl2br($item['description']); ?></p>
+                            <p class="item_description"><?php echo $item['description']; ?></p>
                         </div>
                     </div>
                 </div>
