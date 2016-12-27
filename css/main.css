@@ -155,6 +155,6 @@ footer a {
 	font-size: 12px;
 }
 
-.item_description table td {
+.item_description table tr td {
 	padding: 5px;
 }
