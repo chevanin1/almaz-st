@@ -53,6 +53,7 @@
         <script src="/js/main.js"></script>
         
 <script>
+if( document.getElementById('project_images') ) {
 document.getElementById('project_images').onclick = function (event) {
     event = event || window.event;
     var target = event.target || event.srcElement,
@@ -61,6 +62,7 @@ document.getElementById('project_images').onclick = function (event) {
         links = this.getElementsByTagName('a');
     blueimp.Gallery(links, options);
 };
+}
 </script>
         
     </body>

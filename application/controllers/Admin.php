@@ -785,23 +785,16 @@ class Admin extends CI_Controller {
         $this->load->model('catalog');
     
         if( $this->user->isAuth() && $this->uri->segment(3) ) {
-            
-            /*
-            $CategoryID = $this->uri->segment(3);
-                
-            $this->catalog->DeleteCategory($CategoryID);
-            redirect("/admin/catalog_cat_list/", "refresh");     
-            */            
-            
+            $ElementID = $this->uri->segment(3);
+            $this->catalog->DeleteItem($ElementID);
+            redirect("/admin/catalog_list/", "refresh");     
         } else {
             redirect("/admin/auth/", "refresh");
         } // End if
         
     } // End function catalog_delete
 
-    
-
-    
+      
     ///////////////////////////////////////////////////
     // CATALOG END
     ///////////////////////////////////////////////////
@@ -1159,36 +1152,24 @@ class Admin extends CI_Controller {
     
     public function example_delete() {
     
-        $this->load->model('catalog');
+        $this->load->model('gallery');
     
-        if( $this->user->isAuth() && $this->uri->segment(3) ) {
-            
-            /*
-            $CategoryID = $this->uri->segment(3);
-                
-            $this->catalog->DeleteCategory($CategoryID);
-            redirect("/admin/catalog_cat_list/", "refresh");     
-            */            
-            
+        if( $this->user->isAuth() && $this->uri->segment(3) ) {                      
+            $ElementID = $this->uri->segment(3);                
+            $this->gallery->DeleteItem($ElementID);
+            redirect("/admin/examples_list/", "refresh");                                   
         } else {
             redirect("/admin/auth/", "refresh");
         } // End if
         
     } // End function example_delete
 
-    
-
-   
-  
+      
     ///////////////////////////////////////////////////
     // EXAMPLES END
     ///////////////////////////////////////////////////
   
-
   
-    
-    
-    
     public function auth() {
         
         $this->load->library('form_validation');

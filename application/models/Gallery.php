@@ -2,84 +2,75 @@
 
 class Gallery extends CI_Model {
 
+    var $data_example_img_path = "";
+
     public function __construct() {
         parent::__construct();
                 
         $this->load->helper('text');
         
+        $this->data_example_img_path = base_url('/img/gallery/');
+        
     } // End constructor
     
     
     public function getGalleryOnMain() {
-    
-        $result = array();
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 1",
-            'caption' => "Дом из какого-то бруса 1",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 2",
-            'caption' => "Дом из какого-то бруса 2",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 3",
-            'caption' => "Дом из какого-то бруса 3",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 4",
-            'caption' => "Дом из какого-то бруса 4",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 5",
-            'caption' => "Дом из какого-то бруса 5",
-            'link' => "#",
-        );        
-                
+
+        $filter = array();
+        $Examples = $this->GetItems($filter, 4);
+        
+        foreach( $Examples as $id => $row ) {
+        
+            $Examples[$id]['caption'] = $row['name'];
+
+            if( isset( $Examples[$id]['images'] ) ) {
+                foreach( $Examples[$id]['images'] as $image ) {
+                    if( $image['num'] == 1 ) {
+                        $Examples[$id]['img'] = $this->data_example_img_path . $image['img'];
+                    } // End if
+                } // End foreach
+                unset($Examples[$id]['images']);
+            } // End if  
+            
+            if( !isset($Examples[$id]['img']) ) $Examples[$id]['img'] = base_url('img/nophoto.gif');
+            
+            $Examples[$id]['link'] = base_url('examples/item/' . $id);
+            
+        } // End foreach
+        
+        $result = array_values($Examples);
+
         return $result;
     
     } // End function getGalleryOnMain
     
     
     public function getGalleryByCat( $CategoryID ) {
-    
-        // limit 4
-    
-        $result = array();
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 1",
-            'caption' => "Дом из какого-то бруса 1",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 2",
-            'caption' => "Дом из какого-то бруса 2",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 3",
-            'caption' => "Дом из какого-то бруса 3",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 4",
-            'caption' => "Дом из какого-то бруса 4",
-            'link' => "#",
-        );        
-      
-                
+        
+        $filter = array( 'category_id' => $CategoryID );
+        $Examples = $this->GetItems($filter, 4);
+        
+        foreach( $Examples as $id => $row ) {
+        
+            $Examples[$id]['caption'] = $row['name'];
+
+            if( isset( $Examples[$id]['images'] ) ) {
+                foreach( $Examples[$id]['images'] as $image ) {
+                    if( $image['num'] == 1 ) {
+                        $Examples[$id]['img'] = $this->data_example_img_path . $image['img'];
+                    } // End if
+                } // End foreach
+                unset($Examples[$id]['images']);
+            } // End if  
+            
+            if( !isset($Examples[$id]['img']) ) $Examples[$id]['img'] = base_url('img/nophoto.gif');
+            
+            $Examples[$id]['link'] = base_url('examples/item/' . $id);
+            
+        } // End foreach
+        
+        $result = array_values($Examples);
+
         return $result;
     
     } // End function getGalleryByCat
@@ -87,37 +78,32 @@ class Gallery extends CI_Model {
     
     public function getGalleryByItem( $ItemID ) {
     
-        // limit 4
-    
-        $result = array();
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 1",
-            'caption' => "Дом из какого-то бруса 1",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 2",
-            'caption' => "Дом из какого-то бруса 2",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 3",
-            'caption' => "Дом из какого-то бруса 3",
-            'link' => "#",
-        );        
-        $result[] = array(
-            'img' => "http://lorempixel.com/300/300/",
-            'name' => "Дом из какого-то бруса 4",
-            'caption' => "Дом из какого-то бруса 4",
-            'link' => "#",
-        );        
-      
-                
+        $filter = array( 'item_id' => $ItemID );
+        $Examples = $this->GetItems($filter, 4);
+        
+        foreach( $Examples as $id => $row ) {
+        
+            $Examples[$id]['caption'] = $row['name'];
+
+            if( isset( $Examples[$id]['images'] ) ) {
+                foreach( $Examples[$id]['images'] as $image ) {
+                    if( $image['num'] == 1 ) {
+                        $Examples[$id]['img'] = $this->data_example_img_path . $image['img'];
+                    } // End if
+                } // End foreach
+                unset($Examples[$id]['images']);
+            } // End if  
+            
+            if( !isset($Examples[$id]['img']) ) $Examples[$id]['img'] = base_url('img/nophoto.gif');
+            
+            $Examples[$id]['link'] = base_url('examples/item/' . $id);
+            
+        } // End foreach
+        
+        $result = array_values($Examples);
+
         return $result;
-    
+        
     } // End function getGalleryByItem
     
     
@@ -271,25 +257,30 @@ CREATE TABLE IF NOT EXISTS `examples` (
         
     public function UpdateItem($id, $data) {
         
-        $img_data = $data['img'];
-        unset($data['img']);    
+        $img_data = array();
+        if( isset( $data['img'] ) ) {
+            $img_data = $data['img'];
+            unset($data['img']); 
+        } // End if        
         
         $this->db->update('examples',
             $data, 
             array('id' => $id)
             
         );
-                
-        $this->db->delete('examples_images', array('example_id' => $id));
-        foreach( $img_data as $img_id => $name ) {
-            if( $name != "" ) {
-                $this->db->insert('examples_images', array(
-                    'num' => $img_id,
-                    'img' => $name,
-                    'example_id' => $id
-                ));
-            } // End if
-        } // End foreach       
+            
+        if( count( $img_data ) > 0  ) {
+            $this->db->delete('examples_images', array('example_id' => $id));
+            foreach( $img_data as $img_id => $name ) {
+                if( $name != "" ) {
+                    $this->db->insert('examples_images', array(
+                        'num' => $img_id,
+                        'img' => $name,
+                        'example_id' => $id
+                    ));
+                } // End if
+            } // End foreach 
+        } // End if
         
         return true;
     
@@ -297,10 +288,10 @@ CREATE TABLE IF NOT EXISTS `examples` (
     
     
     public function DeleteItem($id) {
-        /*
-        $this->db->delete('project_categories', array('parent_id' => $id));
-        $this->db->delete('project_categories', array('id' => $id));
-        */
+        
+        $this->db->delete('examples_images', array('example_id' => $id));
+        $this->db->delete('examples', array('id' => $id));
+        
         return true;
     } // End function DeleteItem
     

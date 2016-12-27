@@ -39,41 +39,6 @@ class Catalog extends CI_Model {
             
         } // End foreach
         
-        /*
-        $result = array();
-        $result[] = array(
-            'img' => "/img/gallery/projects/1.jpg",
-            'name' => "Проект 1",
-            'description' => "Это самы простой проект 1 из материала 1",
-            'price' => "400000",            
-            'link' => "#",
-        );
-        
-        $result[] = array(
-            'img' => "/img/gallery/projects/2.jpg",
-            'name' => "Проект 2",
-            'description' => "Это самы простой проект 2 из материала 2",
-            'price' => "600000",            
-            'link' => "#",
-        );
-        
-        $result[] = array(
-            'img' => "/img/gallery/projects/3.jpg",
-            'name' => "Проект 3",
-            'description' => "Это самы простой проект 3 из материала 3",
-            'price' => "800000",            
-            'link' => "#",
-        );
-        
-        $result[] = array(
-            'img' => "/img/gallery/projects/4.jpg",
-            'name' => "Проект 4",
-            'description' => "Это самы простой проект 4 из материала 4",
-            'price' => "1000000",            
-            'link' => "#",
-        );
-        */
-        
         return $result;
     
     } // End function getBestsellers
@@ -262,8 +227,32 @@ CREATE TABLE IF NOT EXISTS `project_categories` (
     
     
     public function DeleteCategory($id) {
+    
+        // Set Examples links to null
+        $this->load->model('gallery');
+        $Examples = $this->gallery->GetItems(array('category_id' => $id));
+        
+        foreach( $Examples as $ExampleID => $Example ) {
+            $this->gallery->UpdateItem( $ExampleID, array('category_id' => 0 ) );
+        } // End foreach
+        
+        // Delete items in sub categories
+        $Categories = $this->GetCategories(array('parent_id' => $id ) );
+        $CategoryIDs = array();
+        foreach( $Categories as $Category ) {
+            $CategoryIDs[] = $Category['id'];
+        } // End foreach        
+        $CategoryIDs[] = $id;
+
+        $Elements = $this->GetItems(array( 'category_id' => $CategoryIDs));
+        foreach( $Elements as $ElementID => $Element ) {
+            $this->DeleteItem( $ElementID );
+        } // End foreach        
+    
+        // Delete categories
         $this->db->delete('project_categories', array('parent_id' => $id));
         $this->db->delete('project_categories', array('id' => $id));
+
         return true;
     } // End function DeleteCategory
     
@@ -466,10 +455,18 @@ item_id
     
     
     public function DeleteItem($id) {
-        /*
-        $this->db->delete('project_categories', array('parent_id' => $id));
-        $this->db->delete('project_categories', array('id' => $id));
-        */
+    
+        // Set Examples links to null
+        $this->load->model('gallery');
+        $Examples = $this->gallery->GetItems(array('item_id' => $id));
+        
+        foreach( $Examples as $ExampleID => $Example ) {
+            $this->gallery->UpdateItem( $ExampleID, array('item_id' => 0 ) );
+        } // End foreach
+       
+        $this->db->delete('project_images', array('item_id' => $id));
+        $this->db->delete('projects', array('id' => $id));
+
         return true;
     } // End function DeleteItem
     
@@ -477,9 +474,6 @@ item_id
     ///////////////////////////////////////////////////////////////////////////
     // ITEMS END
     ///////////////////////////////////////////////////////////////////////////
-    
-    
-
     
 
 } // End Catalog

@@ -6,7 +6,7 @@
                 <div class="col-md-4">
                     <div class="panel panel-default why">
                         <div class="panel-heading">
-                        <h2 class="panel-title">Почему выбирают нас</h2>
+                            <h2 class="panel-title">Почему выбирают нас</h2>
                         </div>
                         <div class="panel-body">
                             <p>Наши преимущества:

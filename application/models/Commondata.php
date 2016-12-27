@@ -119,11 +119,13 @@ class Commondata extends CI_Model {
             'li_class' => "menu-phone-point"
         );      
         
+        /*
         $result[] = array(
             'link' => "#",
             'title' => "Отправить сообщение",
             'is_link' => true
         );
+        */
                 
         return $result;
     
@@ -174,7 +176,7 @@ class Commondata extends CI_Model {
         $result['contacts'] = array();
         $result['contacts']['phones'] = "8-8342-30-01-50, 8-8342-30-01-86";
         $result['contacts']['address'] = "г. Саранск, ул. Лесная, 2Г";        
-        $result['contacts']['email'] = "скоро...";        
+        $result['contacts']['email'] = "info@almaz-st.ru";        
         $result['contacts']['scheme'] = array(
             'link' => "/scheme/",
             'title' => "схема проезда"
@@ -322,7 +324,8 @@ class Commondata extends CI_Model {
 Мы молоды, однако в нашем штате есть все специалисты, необходимые для проведения полного комплекса работ по строительству, устройству коммуникаций, отделке и многим другим сопутствующим видам работ. Все специалисты имеют достаточную квалификацию и все необходимые допуски, а опыт наших сотрудников позволяет нам говорить о высоком качестве и надежности проводимых работ. В этом Вы можете убедиться, перейдя в раздел \"Наши работы\".</p>
 
 <p><strong>Наш адрес:</strong> г. Саранск, ул. Лесная, 2Г<br>
-<strong>Телефоны:</strong> 8-8342-30-01-50 или 8-8342-30-01-86</p>
+<strong>Телефоны:</strong> 8-8342-30-01-50 или 8-8342-30-01-86<br>
+<strong>E-mail:</strong> <a href=\"mailto:info@almaz-st.ru\">info@almaz-st.ru</a></p>
 
 <p><strong>Наши реквизиты:</strong>
 </p>
@@ -335,7 +338,9 @@ class Commondata extends CI_Model {
             'name' => "Контакты",
             'content' => "
 <p><strong>Наш адрес:</strong> г. Саранск, ул. Лесная, 2Г<br>
-<strong>Телефоны:</strong> 8-8342-30-01-50 или 8-8342-30-01-86</p>
+<strong>Телефоны:</strong> 8-8342-30-01-50 или 8-8342-30-01-86<br>
+<strong>E-mail:</strong> <a href=\"mailto:info@almaz-st.ru\">info@almaz-st.ru</a>
+</p>
            <p>
            <strong>На карте:</strong>
            <script type=\"text/javascript\" charset=\"utf-8\" async src=\"https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=2FotHxuu2F5mwUgolU14uGiijfX5ZxkS&amp;width=840&amp;height=400&amp;lang=ru_RU&amp;sourceType=constructor&amp;scroll=true\"></script>

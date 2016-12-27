@@ -48,7 +48,7 @@
                         <p><h2>Проект <?php echo $item['name'];?></h2></p>
                         <p class="item_category"><?php echo $item['category_name'];?></p>
                         <p><h3 class="item_price">Цена: <?php echo $item['price'];?> р.</h3></p>
-                        <p><button type="button" class="btn btn-warning item_fb">Отправить заявку</button></p>
+                        <!--<p><button type="button" class="btn btn-warning item_fb">Отправить заявку</button></p>-->
                         <p><!--<a href="#">распечатать</a> --><a href="/info/" target="_blank"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Как заказать</a></p>
                         </div>
                     </div>

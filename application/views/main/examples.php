@@ -11,7 +11,9 @@
             <div class="carousel-inner" role="listbox">
             <?php foreach( $items as $item_num => $item ) : ?>
                 <div class="item<?php if( $item_num == 0 ) { echo " active"; } ?>">
-                    <a href="<?php echo $item['link']; ?>"><img src="<?php echo $item['img']; ?>" alt="<?php echo $item['name']; ?>"></a>
+                    <a href="<?php echo $item['link']; ?>">
+                        <img src="<?php echo $item['img']; ?>" alt="<?php echo $item['name']; ?>">
+                    </a>
                     <div class="carousel-caption"><?php echo $item['caption']; ?></div>
                 </div>
             <?php endforeach; ?>

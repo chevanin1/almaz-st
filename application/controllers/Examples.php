@@ -85,7 +85,6 @@ class Examples extends CI_Controller {
 	} // End index
     
 
-
 	public function item() {
             
         if( $this->uri->segment(3) ) {
